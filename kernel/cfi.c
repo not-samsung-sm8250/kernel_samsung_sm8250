@@ -286,7 +286,9 @@ static inline cfi_check_fn find_cfi_check(void *ptr)
 
 	f = find_module_cfi_check(ptr);
 
+#ifdef CONFIG_CFI_CLANG_SHADOW
 out:
+#endif /* CONFIG_CFI_CLANG_SHADOW */
 	if (!rcu)
 		rcu_nmi_exit();
 
