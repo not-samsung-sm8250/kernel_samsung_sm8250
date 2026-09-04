@@ -207,6 +207,8 @@ int __nocfi cpuidle_enter_state(struct cpuidle_device *dev, struct cpuidle_drive
 	struct cpuidle_state *target_state = &drv->states[index];
 	bool broadcast = !!(target_state->flags & CPUIDLE_FLAG_TIMER_STOP);
 	ktime_t time_start, time_end;
+	s64 diff, delay;
+	int i;
 
 	/*
 	 * Tell the time framework to switch to a broadcast timer because our
@@ -258,8 +260,7 @@ int __nocfi cpuidle_enter_state(struct cpuidle_device *dev, struct cpuidle_drive
 	dev->last_residency_ns = (int) diff;
 
 	if (entered_state >= 0) {
-		s64 diff, delay = drv->states[entered_state].exit_latency_ns;
-		int i;
+		delay = drv->states[entered_state].exit_latency_ns;
 
 		/* Update cpuidle counters */
 		/* This can be moved to within driver enter routine
